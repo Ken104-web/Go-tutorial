@@ -20,12 +20,13 @@ type car struct {
 }
 
 //gets a copy, receiver type
-func (c car) kmh() float64 {
+func (c *car) kmh() float64 {
 	return float64(c.gas_pedal) * (c.top_speed_kmh/usixteenbitmax) //top speed: 225. So do pedal * (225/65535)
 }
 
 //gets a copy, receiver type
-func (c car) mph() float64 {
+func (c *car) mph() float64 {
+    c.top_speed_kmh = 25
 	return float64(c.gas_pedal) * (c.top_speed_kmh/kmh_multiple/usixteenbitmax)  //top speed: 140 mph.So do pedal * (225/1.60934/65535)
 }
 
