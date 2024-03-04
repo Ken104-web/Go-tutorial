@@ -16,7 +16,11 @@ type Sitemapindex struct {
 
 type Location struct {
     Loc string `xml:"loc"`
-} 
+}
+
+func (l Location) String () string {
+    return fmt.Sprintf(l.Loc)
+}
 
 func main(){
     resp, err := http.Get("https://www.samsung.com/sitemap.xml")
