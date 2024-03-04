@@ -1,3 +1,5 @@
+// anything with a [3]=type is an array
+// anything without a []=type is a slice
 package main
 
 import ("fmt"
@@ -8,7 +10,8 @@ import ("fmt"
 
 
 type Sitemapindex struct {
-    Locations []Location `xml: "sitemap"`
+    XMLName  xml.Name `xml:"sitemapindex"`
+    Locations []Location `xml:"sitemap"`
 }
 
 type Location struct {
