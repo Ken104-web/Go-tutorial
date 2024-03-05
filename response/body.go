@@ -11,16 +11,10 @@ import ("fmt"
 
 type Sitemapindex struct {
     XMLName  xml.Name `xml:"sitemapindex"`
-    Locations []Location `xml:"sitemap"`
+    Locations []string `xml:"sitemap>loc"`
 }
 
-type Location struct {
-    Loc string `xml:"loc"`
-}
 
-func (l Location) String () string {
-    return fmt.Sprintf(l.Loc)
-}
 
 func main(){
     resp, err := http.Get("https://www.samsung.com/sitemap.xml")
@@ -36,6 +30,10 @@ func main(){
 
     resp.Body.Close()
 
-    fmt.Println(s.Locations)
+    // fmt.Println(s.Locations)
+
+    for _, Location := range s.Locations {
+        fmt.Printf("\n%s", Location)
+    } 
 
 }
