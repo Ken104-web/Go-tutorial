@@ -1,8 +1,10 @@
 package main
 
 import (
-  "encoding/xml"
-  "fmt"
+	"encoding/xml"
+	"fmt"
+	"net/http"
+    "io"
 )
 
 var washPostXML = []byte(`
@@ -40,7 +42,7 @@ var washPostXML = []byte(`
 					US-Cisco-BroadSoft-Acquisition,Cisco Systems Inc,Business,Technology,Communication technology</n:keywords>
 			</n:news>
 		</url>
-	</urlset>`
+	</urlset>`,
 )
 
 type Sitemapindex struct {
@@ -48,23 +50,37 @@ type Sitemapindex struct {
 }
 
 type News struct {
-    Titles []string `xml: "url>news>title"`
-    keywords []string `xml: "url>news>keywords"`
-    Locations []string `xml: "url>loc"`
+	Titles    []string `xml:"url>n:news>n:title"`
+	Keywords  []string `xml:"url>n:news>n:keywords"`
+	Locations []string `xml:"url>loc"`
+}
 
+type NewsMap struct{
+    Keyword string
+    Location string
 }
 
 
-func main() {
-  bytes := washPostXML
-  var s Sitemapindex
-  var n News
-  xml.Unmarshal(bytes, &s)
-  // fmt.Println(s.Locations)
+func main(){
 
+    bytes := washPostXML
+    var s Sitemapindex
+    var n News
+    xml.Unmarshal(bytes, &s)
+    news_map := make(map[string]NewsMap)
 
-  for _, Location := range s.Locations{
-      bytes := washPostXML
-      xml.Unmarshal(bytes, &n)
-  }
+    for _, Location := range s.Locations{
+        resp, _ := http.Get(Location)
+        bytes, _ := io.ReadAll(resp.Body)
+        xml.Unmarshal(bytes, &n)
+    
+        for index, _ := range n.Keywords{
+            news_map[n.Titles[index]] = NewsMap{n.Keywords[index], n.Locations[index]}
+        }
+    }
+    for index, data := range news_map {
+        fmt.Println("\n\n\n\n\n",index)
+        fmt.Println("\n",data.Keyword)
+        fmt.Println("\n",data.Location)
+    }
 }
