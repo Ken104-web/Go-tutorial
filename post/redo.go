@@ -40,9 +40,9 @@ func main(){
 		 // fmt.Println(s.Locations)
     
 	
-		// fmt.Println("Found Keywords:", len(n.Titles))
+		fmt.Println("Found Keywords:", len(n.Keywords))
 		
-        for index, _ := range n.Titles{
+        for index, _ := range n.Keywords{
             news_map[n.Titles[index]] = NewsMap{n.Keywords[index], n.Locations[index]}
         }
     }
