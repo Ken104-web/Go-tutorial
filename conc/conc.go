@@ -4,19 +4,28 @@ package main
 
 import (
     "fmt"
+    "sync"
     "time"
 )
 
+var wg sync.WaitGroup
+
 func say(s string){
     for i:=0; i<3; i++{
-        time.Sleep(100*time.Millisecond)
-        fmt.Println(s)
+            time.Sleep(100*time.Millisecond)
+            fmt.Println(s)
     }
+    wg.Done()
 }
+
 func main(){
+    wg.Add(1)
     go say("Hey")
-     say("there")
-
-    time.Sleep(1000*time.Millisecond)
-
+    wg.Add(1)
+    go say("there")
+    wg.Wait()
+    
+    wg.Add(1)
+    go say("ken")
+    wg.Wait()
 }
