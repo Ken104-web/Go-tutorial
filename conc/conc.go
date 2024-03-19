@@ -15,7 +15,7 @@ func say(s string){
 }
 func main(){
     go say("Hey")
-    go say("there")
+     say("there")
 
     time.Sleep(1000*time.Millisecond)
 
