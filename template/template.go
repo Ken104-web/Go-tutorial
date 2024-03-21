@@ -9,7 +9,7 @@ import (
 )
 
 type NewsMap struct {
-    Keyword string
+    Name string
     Location string
 }
 
@@ -24,7 +24,7 @@ type Sitemapindex struct {
 
 type News struct {
     Titles []string `xml:"url>news>title"`
-    Keywords []string `xml:"url>news>keywords"`
+    Names []string `xml:"url>news>publication>keywords"`
     Locations []string `xml:"url>loc"`
 }
 
@@ -47,8 +47,8 @@ func newsAggHandler(w http.ResponseWriter, r *http.Request) {
         bytes, _ := io.ReadAll(resp.Body)
         xml.Unmarshal(bytes, &n)
 
-        for idx, _ := range n.Keywords {
-            news_map[n.Titles[idx]] = NewsMap{n.Keywords[idx], n.Locations[idx]}
+        for idx, _ := range n.Titles {
+            news_map[n.Titles[idx]] = NewsMap{n.Names[idx], n.Locations[idx]}
         }
     }
 
