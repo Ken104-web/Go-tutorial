@@ -37,10 +37,11 @@ func newsAggHandler(w http.ResponseWriter, r *http.Request) {
 
     var s Sitemapindex
     var n News
-    resp, _ := http.Get("https://www.washingtonpost.com/news-world-sitemap.xml")
+    resp, _ := http.Get("https://www.washingtonpost.com/news-national-sitemap.xml")
     bytes, _ := io.ReadAll(resp.Body)
     xml.Unmarshal(bytes, &s)
     news_map := make(map[string]NewsMap)
+    resp.Body.Close()
 
     for _, Location := range s.Locations {
         resp, _ := http.Get(Location)
